@@ -1,0 +1,37 @@
+version: '3.3'
+
+services: 
+  db_wp_app_x:
+    environment: 
+      MYSQL_DATABASE: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: somewordpress
+      MYSQL_USER: wordpress
+    image: "mysql:5.7"
+    restart: always
+    volumes: 
+      - ./cache/mysql_data:/var/lib/mysql
+
+  wordpress_app_x: 
+    depends_on: 
+      - db_wp_app_x
+    environment: 
+      WORDPRESS_DB_HOST: db_wp_app_x:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_USER: wordpress
+    image: wordpress:latest
+    ports: 
+      - 28011:80
+    restart: always
+    volumes: 
+      - ./cache/wordpress-content:/var/www/html/wp-content
+
+  fileserver_app_x: 
+    image: kineviz/files-upload-server
+    ports: 
+      - 28022:8008
+    restart: always
+    volumes: 
+      - ./cache/file_store:/data
+
