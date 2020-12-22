@@ -1,7 +1,7 @@
 version: '3.3'
 
 services: 
-  db_wp_app_x:
+  db_wp_app_dungeon:
     environment: 
       MYSQL_DATABASE: wordpress
       MYSQL_PASSWORD: wordpress
@@ -12,25 +12,25 @@ services:
     volumes: 
       - ./cache/mysql_data:/var/lib/mysql
 
-  wordpress_app_x: 
+  wordpress_app_dungeon: 
     depends_on: 
-      - db_wp_app_x
+      - db_wp_app_dungeon
     environment: 
-      WORDPRESS_DB_HOST: db_wp_app_x:3306
+      WORDPRESS_DB_HOST: db_wp_app_dungeon:3306
       WORDPRESS_DB_NAME: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_USER: wordpress
     image: wordpress:latest
     ports: 
-      - 28011:80
+      - 25011:80
     restart: always
     volumes: 
       - ./cache/wordpress-content:/var/www/html/wp-content
 
-  fileserver_app_x: 
+  fileserver_app_dungeon: 
     image: kineviz/files-upload-server
     ports: 
-      - 28022:8008
+      - 25022:8008
     restart: always
     volumes: 
       - ./cache/file_store:/data
